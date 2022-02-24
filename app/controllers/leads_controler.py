@@ -8,6 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from app.models.lead_model import LeadModel
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+from sqlalchemy import desc
 
 
 def create_leads():
@@ -31,8 +32,8 @@ def get_leads():
     session: Session = current_app.db.session
 
     base_query = session.query(LeadModel)
-
-    leads = base_query.order_by(LeadModel.visits.desc()).all()
+    print(base_query)
+    leads = base_query.order_by(desc(LeadModel.visits)).all()
     if not leads:
         return {"Error" - "Nenhum dado encontrado"}
     return jsonify(leads), HTTPStatus.OK
